@@ -11,7 +11,7 @@
     [(ngModel)]="selectedValue"
     [nzShowArrow]="true"
     (ngModelChange)="onChange()"
-    (nzOnSearch)="search($event)"
+    (nzOnSearch)="onSearch($event)"
   >
     <nz-option
       *ngFor="let o of listOfOptions"
