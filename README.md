@@ -1,3 +1,13 @@
+# Setup
+
+`npm install`
+
+Setup `.env` file with database string
+
+Run server: `node server.js`
+
+Run angular front-end: `ng serve`
+
 # Onehit
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.8.
