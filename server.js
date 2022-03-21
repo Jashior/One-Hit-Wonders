@@ -3,9 +3,11 @@ var express = require("express");
 var app = express();
 var cors = require("cors");
 require("dotenv").config();
+var mongoSanitize = require("express-mongo-sanitize");
 
-// CORS Middleware
+// Middleware
 app.use(cors());
+app.use(mongoSanitize());
 
 // Database Connection //
 const mongoose = require("mongoose");
@@ -31,6 +33,7 @@ app.get("/", function (req, res) {
 });
 
 // Server start
-var server = app.listen(8080, function () {
+LOCAL_PORT = 8080;
+var server = app.listen(process.env.PORT || LOCAL_PORT, function () {
   console.log("Backend Application listening at http://localhost:8080");
 });

@@ -15,8 +15,8 @@
   >
     <nz-option
       *ngFor="let o of listOfOptions"
-      [nzLabel]="o.text"
-      [nzValue]="o.value"
+      [nzLabel]="o.name"
+      [nzValue]="o.id"
     ></nz-option>
   </nz-select>
   <!-- 
@@ -25,11 +25,11 @@
   </button> -->
 
   <h3>Artist</h3>
-  <div *ngIf="currentArtist">
-    {{ currentArtist.artist }}
-    {{ currentArtist.name }}
-    {{ currentArtist.playCountPercent }}
-    {{ currentArtist.url }}
+  <div *ngIf="track">
+    {{ track.artist }}
+    {{ track.name }}
+    {{ track.playCountPercent }}
+    {{ track.url }}
   </div>
 
   <br />

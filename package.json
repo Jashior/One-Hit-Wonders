@@ -21,6 +21,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
+    "express-mongo-sanitize": "^2.2.0",
+    "mongo-sanitize": "^1.1.0",
     "mongoose": "^6.2.7",
     "ng-zorro-antd": "^12.1.1",
     "rxjs": "~6.6.0",
