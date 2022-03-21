@@ -1,0 +1,32 @@
+<div class="container flex flex-col items-center justify-center gap-8">
+  <h1 class="text-3xl font-bold underline">Hello world!</h1>
+
+  <nz-select
+    class="w-64"
+    nzShowSearch
+    nzServerSearch
+    nzPlaceHolder="input search text"
+    [(ngModel)]="selectedValue"
+    [nzShowArrow]="false"
+    [nzFilterOption]="nzFilterOption"
+    (nzOnSearch)="search($event)"
+  >
+    <nz-option
+      *ngFor="let o of listOfOptions"
+      [nzLabel]="o.text"
+      [nzValue]="o.value"
+    ></nz-option>
+  </nz-select>
+
+  <button nz-button (click)="loadArtistInfo()" class="w-24" nzType="primary">
+    Primary
+  </button>
+
+  <h3>Artist</h3>
+  <div *ngIf="currentArtist">
+    {{ currentArtist.artist }}
+    {{ currentArtist.name }}
+    {{ currentArtist.playCountPercent }}
+    {{ currentArtist.url }}
+  </div>
+</div>
