@@ -1,7 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { debounceTime, defaultIfEmpty, switchMap, map } from 'rxjs/operators';
+import {
+  debounceTime,
+  defaultIfEmpty,
+  switchMap,
+  map,
+  catchError,
+} from 'rxjs/operators';
 import { TrackService } from '../services/track.service';
 import { Artist } from '../models/Artist';
 import { Track } from '../models/Track';
@@ -37,10 +43,13 @@ export class SearchComponent implements OnInit {
       .pipe(debounceTime(100))
       .pipe(switchMap(getTracks))
       .pipe(map(toList))
-      .subscribe((data) => {
-        this.listOfOptions = data;
-        this.isLoading = false;
-      });
+      .subscribe(
+        (data) => {
+          this.listOfOptions = data;
+          this.isLoading = false;
+        },
+        (err) => console.log(err)
+      );
   }
 
   onChange() {
@@ -55,9 +64,7 @@ export class SearchComponent implements OnInit {
   }
 
   onSearch(value: string): void {
-    if (value.length < 1) {
-      return;
-    }
+    if (value.length < 1) return;
     this.isLoading = true;
     this.searchChange$.next(value);
     console.log(`searchChange$ next = ${this.searchChange$.value}`);

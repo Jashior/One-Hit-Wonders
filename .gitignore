@@ -1,5 +1,14 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+# OS
+# ===========
+.DS_Store
+ehthumbs.db
+Thumbs.db
+.env
+TODO.md
+mongodb.conf
+
 # compiled output
 /dist
 /tmp

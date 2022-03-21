@@ -10,7 +10,6 @@ import { environment } from 'src/environments/environment';
 })
 export class TrackService {
   API_URL = environment.BASE_API_URL;
-  // API_URL = 'http://localhost:8080/api';
 
   constructor(private http: HttpClient) {}
 
