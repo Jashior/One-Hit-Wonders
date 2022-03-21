@@ -1,7 +1,4 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, debounceTime, map, switchMap } from 'rxjs/operators';
 import { TrackService } from '../services/track.service';
 
 @Component({
@@ -10,19 +7,16 @@ import { TrackService } from '../services/track.service';
   styleUrls: ['./search.component.css'],
 })
 export class SearchComponent implements OnInit {
-  selectedValue = '';
+  selectedValue?: string;
   listOfOptions: Array<{ value: string; text: string }> = [];
-  nzFilterOption = (): boolean => true;
   currentArtist?: any = {};
+  isLoading = false;
 
-  constructor(
-    private trackService: TrackService,
-    private httpClient: HttpClient
-  ) {}
+  constructor(private trackService: TrackService) {}
 
   ngOnInit(): void {}
 
-  loadArtistInfo() {
+  onChange() {
     if (this.selectedValue == null) return;
     if (!this.selectedValue) return;
     this.trackService
@@ -32,11 +26,11 @@ export class SearchComponent implements OnInit {
         console.log(this.currentArtist);
       });
   }
-
   search(value: string): void {
-    if (value.length < 2) {
+    if (value.length < 1) {
       return;
     }
+    this.isLoading = true;
     this.trackService.getTracksByQuery(value).subscribe((data) => {
       const listOfOptions: Array<{ value: string; text: string }> = [];
       data.map((track) => {
@@ -46,6 +40,7 @@ export class SearchComponent implements OnInit {
         });
       });
       this.listOfOptions = listOfOptions;
+      this.isLoading = false;
     });
   }
 }

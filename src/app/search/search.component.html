@@ -5,10 +5,12 @@
     class="w-64"
     nzShowSearch
     nzServerSearch
+    nzSize="large"
     nzPlaceHolder="input search text"
+    [nzLoading]="isLoading"
     [(ngModel)]="selectedValue"
-    [nzShowArrow]="false"
-    [nzFilterOption]="nzFilterOption"
+    [nzShowArrow]="true"
+    (ngModelChange)="onChange()"
     (nzOnSearch)="search($event)"
   >
     <nz-option
@@ -17,10 +19,10 @@
       [nzValue]="o.value"
     ></nz-option>
   </nz-select>
-
+  <!-- 
   <button nz-button (click)="loadArtistInfo()" class="w-24" nzType="primary">
     Primary
-  </button>
+  </button> -->
 
   <h3>Artist</h3>
   <div *ngIf="currentArtist">
@@ -29,4 +31,12 @@
     {{ currentArtist.playCountPercent }}
     {{ currentArtist.url }}
   </div>
+
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  Selected : {{ selectedValue }}
 </div>
