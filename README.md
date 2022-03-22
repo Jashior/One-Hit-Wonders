@@ -1,8 +1,14 @@
+# Example
+
+https://onehitwonders.herokuapp.com
+
 # Setup
+
+To locally setup:
 
 `npm install`
 
-Setup `.env` file with database string
+Setup `.env` file with database string for `mongo_URL`
 
 Run server: `node server.js`
 
