@@ -59,7 +59,6 @@ export class SearchComponent implements OnInit {
       .getTrackById(this.selectedValue)
       .subscribe((data: Track) => {
         this.track = data;
-        console.log(this.track);
       });
   }
 
@@ -67,6 +66,5 @@ export class SearchComponent implements OnInit {
     if (value.length < 1) return;
     this.isLoading = true;
     this.searchChange$.next(value);
-    console.log(`searchChange$ next = ${this.searchChange$.value}`);
   }
 }

@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Track = require("../models/Track");
+const QUERY_LIMIT = 50;
 
 // Get all tracks
 router.get("/getAll", async (req, res) => {
@@ -13,7 +14,7 @@ router.get("/getTracksByQuery/:q", async (req, res) => {
   // Searching artists by query term and matching (not case sensitive)
   const tracks = await Track.find({
     artist: new RegExp(req.params.q, "i"),
-  });
+  }).limit(QUERY_LIMIT);
   res.send(tracks);
 });
 

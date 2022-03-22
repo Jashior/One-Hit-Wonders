@@ -6,7 +6,7 @@
     nzShowSearch
     nzServerSearch
     nzSize="large"
-    nzPlaceHolder="input search text"
+    nzPlaceHolder="Search for an artist..."
     [nzLoading]="isLoading"
     [(ngModel)]="selectedValue"
     [nzShowArrow]="true"
@@ -24,19 +24,21 @@
     Primary
   </button> -->
 
-  <h3>Artist</h3>
-  <div *ngIf="track">
-    {{ track.artist }}
-    {{ track.name }}
-    {{ track.playCountPercent }}
-    {{ track.url }}
+  <div *ngIf="track" class="w-96 shadow-md bg-white rounded-md p-8">
+    <small>Artist</small>
+    <div class="text-xl">{{ track.artist }}</div>
+    <small>Most popular track</small>
+    <div class="text-xl">{{ track.name }}</div>
+    <hr />
+    <div>
+      Across the {{ track.tracks_size }} eligible tracks examined for this
+      artist, {{ track.name }} has
+      <b>{{ track.playCountPercent * 100 | number: "1.2-2" }}%</b>
+      plays.
+    </div>
+    <a href="track.url">Last.fm-Link</a>
   </div>
 
   <br />
   <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  Selected : {{ selectedValue }}
 </div>

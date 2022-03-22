@@ -6,4 +6,5 @@ export interface Track {
   url: string;
   playCountPercent: number;
   artist_popularity_index: number;
+  tracks_size: number;
 }
