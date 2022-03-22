@@ -24,16 +24,18 @@ database.once("connected", () => {
   console.log("Database Connected");
 });
 
+// Static Route
+app.use(express.static("./dist/onehit"));
+app.get("/*", function (req, res) {
+  res.sendFile("index.html", { root: "dist/onehit" });
+});
+
 // Routes
 const routes = require("./routes/routes");
 app.use("/api", routes);
 
-app.get("/", function (req, res) {
-  res.send(`Hello World`);
-});
-
 // Server start
 LOCAL_PORT = 8080;
 var server = app.listen(process.env.PORT || LOCAL_PORT, function () {
-  console.log("Backend Application listening at http://localhost:8080");
+  console.log(`Backend Application listening at ${process.env.PORT || 8080}`);
 });
