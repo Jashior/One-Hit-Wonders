@@ -28,7 +28,7 @@ database.once("connected", () => {
 if (process.env.NODE_ENV) {
   console.log(`Production Environment: serving static Front End`);
   app.use(express.static("./dist/onehit"));
-  app.get("/*", function (req, res) {
+  app.get("/", function (req, res) {
     res.sendFile("index.html", { root: "dist/onehit" });
   });
 } else {
