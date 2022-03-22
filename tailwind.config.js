@@ -1,6 +1,9 @@
 module.exports = {
   content: ["./src/**/*.{html,ts}"],
-  purge: [],
+  purge: {
+    enabled: process.env.TAILWIND_MODE === "build",
+    content: ["./src/**/*.{html,scss,ts}"],
+  },
   darkMode: "media", // or 'media' or 'class'
   theme: {
     container: {
