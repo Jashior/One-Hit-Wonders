@@ -1,8 +1,7 @@
 <div class="container flex flex-col items-center justify-center gap-8">
-  <h1 class="text-3xl font-bold underline">Hello world!</h1>
-
+  <div class="my-6 text-xl">One Hit Wonder</div>
   <nz-select
-    class="w-64"
+    class="w-64 shadow-md"
     nzShowSearch
     nzServerSearch
     nzSize="large"
@@ -19,26 +18,26 @@
       [nzValue]="o.id"
     ></nz-option>
   </nz-select>
-  <!-- 
-  <button nz-button (click)="loadArtistInfo()" class="w-24" nzType="primary">
-    Primary
-  </button> -->
-
-  <div *ngIf="track" class="w-96 shadow-md bg-white rounded-md p-8">
-    <small>Artist</small>
-    <div class="text-xl">{{ track.artist }}</div>
-    <small>Most popular track</small>
-    <div class="text-xl">{{ track.name }}</div>
-    <hr />
+  <div
+    *ngIf="track"
+    class="w-96 h-64 p-6 shadow-md bg-bgc dark:bg-bgc-dark rounded-md"
+  >
+    <div class="text-xs">Artist</div>
+    <div class="text-xl pb-2">{{ track.artist }}</div>
+    <div class="text-xs">Most popular track</div>
+    <div class="text-xl pb-2">{{ track.name }}</div>
+    <hr class="pb-6 divide-ctext dark:divide-ctext-dark" />
     <div>
       Across the {{ track.tracks_size }} eligible tracks examined for this
-      artist, {{ track.name }} has
-      <b>{{ track.playCountPercent * 100 | number: "1.2-2" }}%</b>
+      artist, <b>{{ track.name }}</b> has
+      <b>{{ track.playCountPercent * 100 | number: "1.2-2" }}%</b> of the total
       plays.
     </div>
-    <a href="track.url">Last.fm-Link</a>
+    <a href="{{ track.url }}" class="text-xs underline">Last.fm Link</a>
   </div>
-
-  <br />
-  <br />
+  <button nz-button nzType="primary">Primary Button</button>
+  <button nz-button nzType="default">Default Button</button>
+  <button nz-button nzType="dashed">Dashed Button</button>
+  <button nz-button nzType="text">Text Button</button>
+  <a nz-button nzType="link">Link Button</a>
 </div>
