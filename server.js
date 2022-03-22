@@ -24,11 +24,16 @@ database.once("connected", () => {
   console.log("Database Connected");
 });
 
-// Static Route
-app.use(express.static("./dist/onehit"));
-app.get("/*", function (req, res) {
-  res.sendFile("index.html", { root: "dist/onehit" });
-});
+// Static Route, serve static page in dist folder IF in production mode
+if (process.env.NODE_ENV) {
+  console.log(`Production Environment: serving static Front End`);
+  app.use(express.static("./dist/onehit"));
+  app.get("/*", function (req, res) {
+    res.sendFile("index.html", { root: "dist/onehit" });
+  });
+} else {
+  console.log(`Development Environment: NOT serving static Front End`);
+}
 
 // Routes
 const routes = require("./routes/routes");
