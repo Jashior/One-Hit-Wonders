@@ -15,6 +15,7 @@ import { SearchComponent } from './search/search.component';
 // ng-zorro
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzProgressModule } from 'ng-zorro-antd/progress';
 
 registerLocaleData(uk);
 
@@ -28,6 +29,7 @@ registerLocaleData(uk);
     BrowserAnimationsModule,
     NzButtonModule,
     NzSelectModule,
+    NzProgressModule,
   ],
   providers: [{ provide: NZ_I18N, useValue: en_GB }],
   bootstrap: [AppComponent],

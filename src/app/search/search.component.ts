@@ -67,4 +67,8 @@ export class SearchComponent implements OnInit {
     this.isLoading = true;
     this.searchChange$.next(value);
   }
+
+  formatPercent(val: any) {
+    return (100 * val).toFixed(2);
+  }
 }

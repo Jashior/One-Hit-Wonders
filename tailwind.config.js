@@ -11,12 +11,12 @@ module.exports = {
     },
     extend: {
       colors: {
-        bg: "#A3A3A3",
+        bg: "#EDEAEA",
         bgc: "#D4D4D4",
-        ctext: "23272A",
-        "bg-dark": "#171717",
-        "bgc-dark": "#262626",
-        "ctext-dark": "DEE2E7",
+        ctext: "#23272A",
+        "bg-dark": "#111313",
+        "bgc-dark": "#1D1F20",
+        "ctext-dark": "#dde0e2",
       },
     },
   },
