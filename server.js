@@ -11,7 +11,7 @@ app.use(mongoSanitize());
 
 // Database Connection //
 const mongoose = require("mongoose");
-const mongoString = process.env.MONGO_URL;
+const mongoString = process.env.mongo_URL;
 
 mongoose.connect(mongoString);
 const database = mongoose.connection;
