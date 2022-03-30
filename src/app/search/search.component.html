@@ -12,19 +12,20 @@
     nzSize="large"
     nzPlaceHolder="Search for an artist..."
     [nzLoading]="isLoading"
-    [(ngModel)]="selectedValue"
+    [(ngModel)]="trackId"
     [nzShowArrow]="true"
     (ngModelChange)="onSelectArtist()"
     (nzOnSearch)="onSearch($event)"
   >
     <nz-option
-      *ngFor="let o of listOfOptions"
+      *ngFor="let o of listOfArtists"
       [nzLabel]="o.name"
       [nzValue]="o.id"
     ></nz-option>
   </nz-select>
 
   <nz-alert
+    class="w-64"
     *ngIf="error"
     nzType="error"
     nzMessage="Error"

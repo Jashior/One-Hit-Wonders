@@ -7,6 +7,7 @@ import {
   switchMap,
   map,
   catchError,
+  tap,
 } from 'rxjs/operators';
 import { TrackService } from '../services/track.service';
 import { Artist } from '../models/Artist';
@@ -14,8 +15,8 @@ import { Track } from '../models/Track';
 import { ThrowStmt } from '@angular/compiler';
 
 enum Display {
-  'SEARCH',
-  'TOP_LIST',
+  SEARCH,
+  TOP_LIST,
 }
 
 @Component({
@@ -24,16 +25,23 @@ enum Display {
   styleUrls: ['./search.component.css'],
 })
 export class SearchComponent implements OnInit {
-  selectedValue?: string;
-  listOfOptions: Artist[] = [];
+  // Current Track
   track?: Track;
-  topTracks?: Track[];
+  trackId?: string;
+
+  // Search vars
+  listOfArtists: Artist[] = [];
   isLoading = false;
-  searchChange$ = new BehaviorSubject('');
+  searchChange$: BehaviorSubject<string> = new BehaviorSubject<string>('');
+
+  // Top 10
+  topTracks?: Track[];
+
+  // Display state
   Display = Display; // So HTML template can use the enum
   displayMode: Display | undefined; // Either 'SEARCH' or 'TOP_LIST'
 
-  // error
+  // Error handling
   errorMessage?: string;
   error: boolean = false;
 
@@ -41,14 +49,24 @@ export class SearchComponent implements OnInit {
 
   ngOnInit(): void {
     // HTTP request pipe inside switchMap so it can be canceled on immediate subsequent request
+    // Handle errors inside here, if you handle errors outside on the main pipe then it will close the stream on error
+    // We want the main pipe to stay open
     const getTracks = (name: string): Observable<any> => {
       if (!name) return of();
-      return this.trackService.getTracksByQuery(name);
+      return this.trackService
+        .getTracksByQuery(name)
+        .pipe(catchError((err) => this.handleError(err, 'Failed to search')));
     };
 
     // Mapping data to correct form for the drop down search menu
     const toList = (data: any[]): Artist[] =>
       data.map((t: any): Artist => ({ id: t['_id'], name: t['artist'] }));
+
+    // Sets
+    const setArtistsList = (data: any): void => {
+      this.listOfArtists = data;
+      this.isLoading = false;
+    };
 
     // Observing the search subject
     const searchObs$: any = this.searchChange$
@@ -56,40 +74,40 @@ export class SearchComponent implements OnInit {
       .pipe(debounceTime(100))
       .pipe(switchMap(getTracks))
       .pipe(map(toList))
-      .subscribe(
-        (data) => {
-          this.listOfOptions = data;
-          this.isLoading = false;
-        },
-        (err) => {
-          console.log(err);
-          this.displayError('Could not fetch results from search query');
-        }
-      );
+      .pipe(tap(setArtistsList))
+      .subscribe();
   }
 
   onSelectArtist() {
-    if (!this.selectedValue) return;
+    if (!this.trackId) return;
     this.clearError();
-    this.trackService.getTrackById(this.selectedValue).subscribe(
-      (data: Track) => {
-        this.isLoading = false;
-        this.track = data;
-        this.displayMode = Display.SEARCH;
-      },
-      (err) => {
-        console.log(err);
-        this.displayError('Could not fetch artist result');
-      }
-    );
+
+    const setCurrentTrack = (data: Track) => {
+      this.isLoading = false;
+      this.track = data;
+      this.displayMode = Display.SEARCH;
+    };
+
+    this.trackService
+      .getTrackById(this.trackId)
+      .pipe(
+        tap(setCurrentTrack),
+        catchError((err: any) =>
+          this.handleError(err, 'Failed to get artist information')
+        )
+      )
+      .subscribe();
   }
 
   onSearch(value: string): void {
     if (value.length < 2) return;
     this.isLoading = true;
-    this.clearError();
-    console.log(`Searching ${value}`);
     this.searchChange$.next(value);
+  }
+
+  handleError(err: any, str: string): Observable<any> {
+    this.displayError(str);
+    return of();
   }
 
   displayError(msg: string) {
@@ -106,16 +124,22 @@ export class SearchComponent implements OnInit {
   getTopList(n: number) {
     this.isLoading = true;
     this.clearError();
-    this.trackService.getTopTracks(n).subscribe(
-      (data: Track[]) => {
-        this.isLoading = false;
-        this.topTracks = data;
-        this.displayMode = Display.TOP_LIST;
-        this.selectedValue = undefined;
-      },
-      (err) => {
-        this.displayError(`Couldn't get top list from database`);
-      }
-    );
+
+    const setTopTracks = (data: Track[]) => {
+      this.isLoading = false;
+      this.topTracks = data;
+      this.displayMode = Display.TOP_LIST;
+      this.trackId = undefined;
+    };
+
+    this.trackService
+      .getTopTracks(n)
+      .pipe(
+        tap(setTopTracks),
+        catchError((err: any) =>
+          this.handleError(err, 'Failed to get top tracks')
+        )
+      )
+      .subscribe();
   }
 }

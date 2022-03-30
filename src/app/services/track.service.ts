@@ -18,7 +18,7 @@ export class TrackService {
   }
 
   getTracksByQuery(q: String) {
-    return this.http.get<Track[]>(`${this.API_URL}/getTracsByQuery/${q}`);
+    return this.http.get<Track[]>(`${this.API_URL}/getTracksByQuery/${q}`);
   }
 
   getTrackById(id: String) {
