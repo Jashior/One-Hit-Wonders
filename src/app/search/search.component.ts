@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import {
   debounceTime,
   defaultIfEmpty,
@@ -11,6 +11,12 @@ import {
 import { TrackService } from '../services/track.service';
 import { Artist } from '../models/Artist';
 import { Track } from '../models/Track';
+import { ThrowStmt } from '@angular/compiler';
+
+enum Display {
+  'SEARCH',
+  'TOP_LIST',
+}
 
 @Component({
   selector: 'app-search',
@@ -21,8 +27,15 @@ export class SearchComponent implements OnInit {
   selectedValue?: string;
   listOfOptions: Artist[] = [];
   track?: Track;
+  topTracks?: Track[];
   isLoading = false;
   searchChange$ = new BehaviorSubject('');
+  Display = Display; // So HTML template can use the enum
+  displayMode: Display | undefined; // Either 'SEARCH' or 'TOP_LIST'
+
+  // error
+  errorMessage?: string;
+  error: boolean = false;
 
   constructor(private trackService: TrackService, private http: HttpClient) {}
 
@@ -48,27 +61,61 @@ export class SearchComponent implements OnInit {
           this.listOfOptions = data;
           this.isLoading = false;
         },
-        (err) => console.log(err)
+        (err) => {
+          console.log(err);
+          this.displayError('Could not fetch results from search query');
+        }
       );
   }
 
-  onChange() {
-    if (this.selectedValue == null) return;
+  onSelectArtist() {
     if (!this.selectedValue) return;
-    this.trackService
-      .getTrackById(this.selectedValue)
-      .subscribe((data: Track) => {
+    this.clearError();
+    this.trackService.getTrackById(this.selectedValue).subscribe(
+      (data: Track) => {
+        this.isLoading = false;
         this.track = data;
-      });
+        this.displayMode = Display.SEARCH;
+      },
+      (err) => {
+        console.log(err);
+        this.displayError('Could not fetch artist result');
+      }
+    );
   }
 
   onSearch(value: string): void {
-    if (value.length < 1) return;
+    if (value.length < 2) return;
     this.isLoading = true;
+    this.clearError();
+    console.log(`Searching ${value}`);
     this.searchChange$.next(value);
   }
 
-  formatPercent(val: any) {
-    return (100 * val).toFixed(2);
+  displayError(msg: string) {
+    this.error = true;
+    this.isLoading = false;
+    this.errorMessage = msg;
+  }
+
+  clearError() {
+    this.error = false;
+    this.errorMessage = undefined;
+  }
+
+  getTopList(n: number) {
+    this.isLoading = true;
+    this.clearError();
+    this.trackService.getTopTracks(n).subscribe(
+      (data: Track[]) => {
+        this.isLoading = false;
+        this.topTracks = data;
+        this.displayMode = Display.TOP_LIST;
+        this.selectedValue = undefined;
+      },
+      (err) => {
+        this.displayError(`Couldn't get top list from database`);
+      }
+    );
   }
 }

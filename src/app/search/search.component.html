@@ -1,5 +1,10 @@
 <div class="container flex flex-col items-center justify-center gap-8">
-  <div class="my-3 text-2xl">One Hit Wonders</div>
+  <div class="my-2 flex flex-col items-center justify-center">
+    <div class="text-2xl cursor-default">One Hit Wonders</div>
+    <div class="text-sm underline cursor-pointer" (click)="getTopList(10)">
+      Top 10
+    </div>
+  </div>
   <nz-select
     class="w-64 shadow-md"
     nzShowSearch
@@ -9,7 +14,7 @@
     [nzLoading]="isLoading"
     [(ngModel)]="selectedValue"
     [nzShowArrow]="true"
-    (ngModelChange)="onChange()"
+    (ngModelChange)="onSelectArtist()"
     (nzOnSearch)="onSearch($event)"
   >
     <nz-option
@@ -18,29 +23,25 @@
       [nzValue]="o.id"
     ></nz-option>
   </nz-select>
-  <div
-    *ngIf="track"
-    class="w-96 h-96 p-6 flex flex-col shadow-md bg-bgc dark:bg-bgc-dark rounded-md"
-  >
-    <div class="text-xs">Artist</div>
-    <div class="text-xl pb-2 font-bold">{{ track.artist }}</div>
-    <div class="text-xs">Most popular track</div>
-    <div class="text-xl pb-2 font-bold">{{ track.name }}</div>
-    <hr class="pb-6 divide-ctext dark:divide-ctext-dark" />
-    <div>
-      Across the {{ track.tracks_size }} eligible tracks examined for this
-      artist, <b>{{ track.name }}</b> has
-      <b>{{ formatPercent(track.playCountPercent) }}%</b> of the total plays.
-    </div>
-    <a href="{{ track.url }}" class="text-xs underline">Last.fm Link</a>
-    <div class="mt-4 flex justify-center">
-      <nz-progress
-        [nzPercent]="formatPercent(track.playCountPercent)"
-        nzType="circle"
-        nzStatus="active"
-      ></nz-progress>
-    </div>
 
-    <div></div>
+  <nz-alert
+    *ngIf="error"
+    nzType="error"
+    nzMessage="Error"
+    nzDescription="{{ errorMessage }}"
+    nzShowIcon
+  ></nz-alert>
+
+  <div *ngIf="track && displayMode == Display.SEARCH">
+    <app-result [track]="track"></app-result>
+  </div>
+
+  <div
+    *ngIf="topTracks && displayMode == Display.TOP_LIST"
+    class="flex flex-col gap-5 mb-5"
+  >
+    <div *ngFor="let track of topTracks">
+      <app-result [track]="track"></app-result>
+    </div>
   </div>
 </div>

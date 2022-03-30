@@ -4,7 +4,6 @@
 @import "~ng-zorro-antd/ng-zorro-antd.min.css";
 @import "~ng-zorro-antd/ng-zorro-antd.dark.css";
 */
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

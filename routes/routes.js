@@ -18,6 +18,15 @@ router.get("/getTracksByQuery/:q", async (req, res) => {
   res.send(tracks);
 });
 
+router.get("/getTopList/:n", async (req, res) => {
+  const tracks = await Track.find({
+    tracks_size: { $gt: 40 },
+  })
+    .sort([["playCountPercent", -1]])
+    .limit(Math.min(req.params.n, 50));
+  res.send(tracks);
+});
+
 // Get by ID
 router.get("/getTrack/:id", async (req, res) => {
   const track = await Track.findOne({ _id: req.params.id });

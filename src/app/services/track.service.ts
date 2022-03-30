@@ -18,10 +18,14 @@ export class TrackService {
   }
 
   getTracksByQuery(q: String) {
-    return this.http.get<Track[]>(`${this.API_URL}/getTracksByQuery/${q}`);
+    return this.http.get<Track[]>(`${this.API_URL}/getTracsByQuery/${q}`);
   }
 
   getTrackById(id: String) {
     return this.http.get<Track>(`${this.API_URL}/getTrack/${id}`);
+  }
+
+  getTopTracks(n: number) {
+    return this.http.get<Track[]>(`${this.API_URL}/getTopList/${n}`);
   }
 }

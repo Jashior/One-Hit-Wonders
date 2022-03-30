@@ -1,0 +1,25 @@
+<div
+  *ngIf="track"
+  class="w-96 min-h-96 p-6 flex flex-col shadow-md bg-bgc dark:bg-bgc-dark rounded-md"
+>
+  <div class="text-xs">Artist</div>
+  <div class="text-xl pb-2 font-bold">{{ track.artist }}</div>
+  <div class="text-xs">Most popular track</div>
+  <div class="text-xl pb-2 font-bold">{{ track.name }}</div>
+  <hr class="pb-6 divide-ctext dark:divide-ctext-dark" />
+  <div>
+    Across the {{ track.tracks_size }} eligible tracks examined for this artist,
+    <b>{{ track.name }}</b> has
+    <b>{{ formatPercent(track.playCountPercent) }}%</b> of the total plays.
+  </div>
+  <a href="{{ track.url }}" class="text-xs underline">Last.fm Link</a>
+  <div class="mt-4 flex justify-center">
+    <nz-progress
+      [nzPercent]="formatPercent(track.playCountPercent)"
+      nzType="circle"
+      nzStatus="active"
+    ></nz-progress>
+  </div>
+
+  <div></div>
+</div>

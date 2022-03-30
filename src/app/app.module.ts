@@ -16,11 +16,13 @@ import { SearchComponent } from './search/search.component';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzProgressModule } from 'ng-zorro-antd/progress';
+import { ResultComponent } from './result/result.component';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
 
 registerLocaleData(uk);
 
 @NgModule({
-  declarations: [AppComponent, SearchComponent],
+  declarations: [AppComponent, SearchComponent, ResultComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -30,6 +32,7 @@ registerLocaleData(uk);
     NzButtonModule,
     NzSelectModule,
     NzProgressModule,
+    NzAlertModule,
   ],
   providers: [{ provide: NZ_I18N, useValue: en_GB }],
   bootstrap: [AppComponent],
