@@ -28,4 +28,8 @@ export class TrackService {
   getTopTracks(n: number) {
     return this.http.get<Track[]>(`${this.API_URL}/getTopList/${n}`);
   }
+
+  getGraphData() {
+    return this.http.get<any>(`${this.API_URL}/getGraphData/`);
+  }
 }

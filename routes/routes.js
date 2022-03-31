@@ -45,4 +45,97 @@ router.get("/getTrackByName/:trackName", async (req, res) => {
   res.send(track);
 });
 
+// Get data for graph (aggregation of data into 0.05 sized buckets)
+router.get("/getGraphData/", async (req, res) => {
+  const pipeline = [
+    {
+      $match: {
+        tracks_size: {
+          $gt: 25,
+        },
+      },
+    },
+    {
+      $addFields: {
+        playCountPercent: {
+          $cond: {
+            if: {
+              $in: [
+                {
+                  $type: "$playCountPercent",
+                },
+                ["double", "int", "long", "decimal"],
+              ],
+            },
+            then: "$playCountPercent",
+            else: null,
+          },
+        },
+      },
+    },
+    {
+      $addFields: {
+        __alias_0: {
+          $multiply: [
+            {
+              $floor: {
+                $divide: ["$playCountPercent", 0.05],
+              },
+            },
+            0.05,
+          ],
+        },
+      },
+    },
+    {
+      $group: {
+        _id: {
+          __alias_0: "$__alias_0",
+        },
+        __alias_1: {
+          $sum: {
+            $cond: [
+              {
+                $ne: [
+                  {
+                    $type: "$playCountPercent",
+                  },
+                  "missing",
+                ],
+              },
+              1,
+              0,
+            ],
+          },
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        __alias_0: "$_id.__alias_0",
+        __alias_1: 1,
+      },
+    },
+    {
+      $project: {
+        x: "$__alias_0",
+        y: "$__alias_1",
+        _id: 0,
+      },
+    },
+    {
+      $sort: {
+        x: 1,
+      },
+    },
+  ];
+  const aggTracks = await (
+    await Track.aggregate(pipeline)
+  ).map((group) => ({
+    y: group.y,
+    x: `${(group.x * 100).toFixed()}-${(5 + group.x * 100).toFixed()}%`,
+  }));
+  res.send(aggTracks);
+});
 module.exports = router;

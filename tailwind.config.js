@@ -17,6 +17,7 @@ module.exports = {
         "bg-dark": "#111313",
         "bgc-dark": "#1D1F20",
         "ctext-dark": "#dde0e2",
+        primBlue: "#177DDC",
       },
     },
   },

@@ -17,6 +17,7 @@ import { ThrowStmt } from '@angular/compiler';
 enum Display {
   SEARCH,
   TOP_LIST,
+  GRAPH,
 }
 
 @Component({
@@ -44,6 +45,9 @@ export class SearchComponent implements OnInit {
   // Error handling
   errorMessage?: string;
   error: boolean = false;
+
+  // Graph Data
+  graphData?: any;
 
   constructor(private trackService: TrackService, private http: HttpClient) {}
 
@@ -138,6 +142,28 @@ export class SearchComponent implements OnInit {
         tap(setTopTracks),
         catchError((err: any) =>
           this.handleError(err, 'Failed to get top tracks')
+        )
+      )
+      .subscribe();
+  }
+
+  showGraph() {
+    this.isLoading = true;
+    this.clearError();
+
+    const setGraphData = (data: any) => {
+      this.graphData = data;
+      this.isLoading = false;
+      this.displayMode = Display.GRAPH;
+      this.trackId = undefined;
+    };
+
+    this.trackService
+      .getGraphData()
+      .pipe(
+        tap(setGraphData),
+        catchError((err: any) =>
+          this.handleError(err, 'Failed to get statistics')
         )
       )
       .subscribe();

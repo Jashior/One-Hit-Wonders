@@ -1,0 +1,35 @@
+.chart{
+    width: 800px
+}
+.chart-container{
+    width: auto;
+}
+
+@media only screen and (max-width: 800px){
+    .chart{
+        width: 450px;
+    }
+}
+
+@media only screen and (max-width: 470px){
+    .chart{
+        width: 380px;
+    }
+}
+/* .chart{
+    width: 800px;
+    height: auto;
+    @media only screen and (max-width: 650px){
+        .chart-container{
+            width: 450px;
+         }
+         .chart{
+
+         }
+         @media only screen and (max-width: 470px){
+            .chart-container{
+                width: 380px;
+             }
+        }
+    }
+} */

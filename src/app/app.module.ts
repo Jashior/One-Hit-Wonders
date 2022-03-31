@@ -18,11 +18,22 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzProgressModule } from 'ng-zorro-antd/progress';
 import { ResultComponent } from './result/result.component';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { GraphComponent } from './graph/graph.component';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
+// echart
+import { NgxEchartsModule } from 'ngx-echarts';
 
 registerLocaleData(uk);
 
 @NgModule({
-  declarations: [AppComponent, SearchComponent, ResultComponent],
+  declarations: [
+    AppComponent,
+    SearchComponent,
+    ResultComponent,
+    GraphComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -33,6 +44,11 @@ registerLocaleData(uk);
     NzSelectModule,
     NzProgressModule,
     NzAlertModule,
+    NzDividerModule,
+    NzIconModule,
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts'),
+    }),
   ],
   providers: [{ provide: NZ_I18N, useValue: en_GB }],
   bootstrap: [AppComponent],

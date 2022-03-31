@@ -1,8 +1,18 @@
 <div class="container flex flex-col items-center justify-center gap-8">
   <div class="my-2 flex flex-col items-center justify-center">
-    <div class="text-2xl cursor-default">One Hit Wonders</div>
-    <div class="text-sm underline cursor-pointer" (click)="getTopList(10)">
-      Top 10
+    <div class="flex flex-row justify-between gap-x-6">
+      <span
+        class="text-sm underline cursor-pointer hover:text-primBlue"
+        (click)="getTopList(10)"
+      >
+        Top 10
+      </span>
+      <span
+        class="text-sm underline cursor-pointer hover:text-primBlue"
+        (click)="showGraph()"
+      >
+        Statistics
+      </span>
     </div>
   </div>
   <nz-select
@@ -44,5 +54,9 @@
     <div *ngFor="let track of topTracks">
       <app-result [track]="track"></app-result>
     </div>
+  </div>
+
+  <div *ngIf="displayMode == Display.GRAPH">
+    <app-graph [data]="graphData"></app-graph>
   </div>
 </div>
