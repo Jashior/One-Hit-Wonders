@@ -51,7 +51,7 @@ router.get("/getGraphData/", async (req, res) => {
     {
       $match: {
         tracks_size: {
-          $gt: 25,
+          $gt: 40,
         },
       },
     },
