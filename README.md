@@ -2,7 +2,7 @@
 
 A one-hit wonder is any entity that achieves mainstream popularity, often for only one piece of work, and becomes known among the general public solely for that momentary success.
 
-One-hit Wonders shows statistics of a music artist's most well known track.
+This app, One-hit-wonders, shows the popularity metric of a music artist's most well known track compared to their discography.
 
 # Demo
 
